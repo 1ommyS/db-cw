@@ -7,9 +7,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
 
 @Configuration
-class CustomCorsFilter {
+open class CustomCorsFilter {
     @Bean
-    fun corsFilter(): CorsFilter {
+    open fun corsFilter(): CorsFilter {
         val config = CorsConfiguration();
         config.allowCredentials = true;
         config.addAllowedOrigin("http://localhost:3000");

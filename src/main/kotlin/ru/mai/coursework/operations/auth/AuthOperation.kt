@@ -11,11 +11,11 @@ import ru.mai.coursework.infrastructure.repository.user.UserRepository
 
 @Service
 class AuthOperation(
-    val userRepository: UserRepository,
-    val passwordEncoder: PasswordEncoder,
-    val jwtTokenProvider: JwtTokenProvider
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder,
+    private val jwtTokenProvider: JwtTokenProvider
 ) {
-    operator suspend fun invoke(username: String, password: String): String {
+    suspend operator fun invoke(username: String, password: String): String {
         val userFromDb =
             userRepository.findByUsername(username) ?: throw BusinessException(BusinessExceptionCode.USER_NOT_FOUND)
 
