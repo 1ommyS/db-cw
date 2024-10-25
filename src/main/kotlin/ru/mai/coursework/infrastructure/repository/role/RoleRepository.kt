@@ -10,7 +10,7 @@ class RoleRepository(
 ) {
     suspend fun getClientRole(): Role? {
         return jdbcTemplate.queryForObject(
-            "SELECT * FROM role WHERE name = 'CLIENT'",
+            "SELECT * FROM roles WHERE role_name = 'CLIENT'",
             Role::class.java
         )
     }

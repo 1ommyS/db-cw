@@ -3,3 +3,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/mydb
     username: myuser
     password: secret
+server:
+  servlet:
+    context-path: /api
