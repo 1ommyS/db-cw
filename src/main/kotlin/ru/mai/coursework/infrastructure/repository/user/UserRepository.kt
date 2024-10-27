@@ -50,7 +50,7 @@ class UserRepository(
         }
     }
 
-    suspend fun findAll() {
+    suspend fun findAll() = withContext(Dispatchers.IO) {
         val sql = """
                 SELECT 
                 id, 
@@ -68,11 +68,10 @@ class UserRepository(
                 JOIN roles r ON users.role_id = r.id
             """.trimIndent()
 
-        return withContext(Dispatchers.IO) {
-            jdbcTemplate.queryForObject<List<User>>(
-                sql
-            )
-        }
+        return@withContext jdbcTemplate.queryForObject<List<User>>(
+            sql
+        )
+
     }
 
     suspend fun findById(id: Int): User? {
@@ -118,7 +117,8 @@ class UserRepository(
             WHERE id = ?
         """.trimIndent()
 
-            jdbcTemplate.update(sql,
+            jdbcTemplate.update(
+                sql,
                 user.username,
                 user.password,
                 user.email,

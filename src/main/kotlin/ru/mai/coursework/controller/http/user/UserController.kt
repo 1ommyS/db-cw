@@ -1,5 +1,6 @@
 package ru.mai.coursework.controller.http.user
 
+import io.swagger.v3.oas.annotations.Operation
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
@@ -28,7 +29,8 @@ class UserController(
      *
      * @return a list of users.
      */
-    @GetMapping
+    @GetMapping(produces = ["application/json"])
+    @Operation(description = "Получает список всех пользователей.")
     @PreAuthorize("isAuthenticated()")
     suspend fun getUsers() = findUsersOperation.findAll()
 
@@ -38,8 +40,9 @@ class UserController(
      * @param id the ID of the user to find.
      * @return the user with the given [id].
      */
-    @GetMapping("{id}")
+    @GetMapping("{id}", consumes = ["application/json"])
     @PreAuthorize("isAuthenticated()")
+    @Operation(description = "Получает пользователя по ID.")
     suspend fun getUserById(@PathVariable id: Int) = findUsersOperation.findById(id)
 
     /**
@@ -50,7 +53,8 @@ class UserController(
      * @param user the current user.
      * @param dto the user to update with.
      */
-    @PutMapping
+    @PutMapping(produces = ["application/json"], consumes = ["application/json"])
+    @Operation(description = "Обновляет текущего пользователя.")
     @PreAuthorize("isAuthenticated()")
     suspend fun updateUser(@AuthenticationPrincipal user: User, @RequestBody dto: UpdateUserDto) {
         dto.id = user.id

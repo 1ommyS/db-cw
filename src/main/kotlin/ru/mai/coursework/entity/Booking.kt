@@ -4,7 +4,7 @@ import java.sql.ResultSet
 import java.time.LocalDateTime
 
 data class Booking(
-    val bookingId: Int,
+    val bookingId: Int?,
     val userId: Int,
     val timeSlotId: Int,
     val bookingTime: LocalDateTime,
