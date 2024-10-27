@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import ru.mai.coursework.controller.http.auth.dto.SignUpDto
 import ru.mai.coursework.entity.User
+import ru.mai.coursework.infrastructure.aspects.Log
 import ru.mai.coursework.infrastructure.configuration.security.providers.JwtTokenProvider
 import ru.mai.coursework.infrastructure.exceptions.base.business.BusinessException
 import ru.mai.coursework.infrastructure.exceptions.base.business.BusinessExceptionCode
@@ -17,6 +18,7 @@ class SignUpOperation(
     private val passwordEncoder: PasswordEncoder,
     private val jwtTokenProvider: JwtTokenProvider
 ) {
+    @Log
     suspend operator fun invoke(user: SignUpDto): String {
         userRepository.findByUsername(user.username)
             ?: throw BusinessException(BusinessExceptionCode.USER_ALREADY_EXISTS)

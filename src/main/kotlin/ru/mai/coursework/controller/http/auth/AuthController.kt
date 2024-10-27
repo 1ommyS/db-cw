@@ -10,18 +10,17 @@ import ru.mai.coursework.operations.auth.AuthOperation
 import ru.mai.coursework.operations.signup.SignUpOperation
 
 @RestController
-@RequestMapping("auth")
 open class AuthController(
     private val authOperation: AuthOperation,
     private val signUpOperation: SignUpOperation,
 ) {
 
-    @PostMapping
-    suspend fun auth(@RequestBody userCredentials: AuthDto): String {
+    @PostMapping("sign-in")
+    suspend fun signIn(@RequestBody userCredentials: AuthDto): String {
         return authOperation(userCredentials.login, userCredentials.password)
     }
 
-    @PostMapping
+    @PostMapping("sign-up")
     suspend fun signUp(@RequestBody userCredentials: SignUpDto): String {
         return signUpOperation(userCredentials)
     }

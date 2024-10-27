@@ -1,11 +1,13 @@
 package ru.mai.coursework.operations.user
 
 import org.springframework.stereotype.Service
+import ru.mai.coursework.infrastructure.aspects.Log
 import ru.mai.coursework.infrastructure.exceptions.base.business.BusinessException
 import ru.mai.coursework.infrastructure.exceptions.base.business.BusinessExceptionCode
 import ru.mai.coursework.infrastructure.repository.user.UserRepository
 
 @Service
+@Log
 class FindUsersOperation(
     private val userRepository: UserRepository
 ) {

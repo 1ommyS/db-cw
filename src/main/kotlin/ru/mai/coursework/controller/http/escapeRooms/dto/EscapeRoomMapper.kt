@@ -1,20 +1,15 @@
 package ru.mai.coursework.controller.http.escapeRooms.dto
 
 import org.mapstruct.*
+import org.springframework.stereotype.Component
 import ru.mai.coursework.entity.EscapeRoom
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-abstract class EscapeRoomMapper {
+interface EscapeRoomMapper {
 
-    abstract fun toEntity(escapeRoomResponse: CreateEscapeRoomRequest): EscapeRoom
-    abstract fun toEntity(escapeRoomResponse: UpdateEscapeRoomRequest): EscapeRoom
+    fun toEntity(escapeRoomResponse: CreateEscapeRoomRequest): EscapeRoom
+    fun toEntity(escapeRoomResponse: UpdateEscapeRoomRequest): EscapeRoom
 
-    abstract fun toDto(escapeRoom: EscapeRoom): EscapeRoomResponse
-    abstract fun toDto(escapeRoom: List<EscapeRoom>): List<EscapeRoomResponse>
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    abstract fun partialUpdate(
-        escapeRoomResponse: EscapeRoomResponse,
-        @MappingTarget escapeRoom: EscapeRoom
-    ): EscapeRoom
+    fun toDto(escapeRoom: EscapeRoom): EscapeRoomResponse
+    fun toDto(escapeRoom: List<EscapeRoom>): List<EscapeRoomResponse>
 }

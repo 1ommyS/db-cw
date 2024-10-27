@@ -4,6 +4,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -49,7 +50,7 @@ class UserController(
      * @param user the current user.
      * @param dto the user to update with.
      */
-    @GetMapping
+    @PutMapping
     @PreAuthorize("isAuthenticated()")
     suspend fun updateUser(@AuthenticationPrincipal user: User, @RequestBody dto: UpdateUserDto) {
         dto.id = user.id
