@@ -1,8 +1,5 @@
 package ru.mai.coursework.controller.http.auth.dto
 
-data class JwtResult(
-    val accessToken: String,
+data class RefreshTokenDto(
     val refreshToken: String
-
-) {
-}
+)

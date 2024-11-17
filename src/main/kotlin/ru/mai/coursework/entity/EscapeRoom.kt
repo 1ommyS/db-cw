@@ -11,8 +11,8 @@ data class EscapeRoom(
     val difficultyLevel: String?,
     val maxParticipants: Int,
     val price: BigDecimal,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val updatedAt: LocalDateTime = LocalDateTime.now()
 )
 fun ResultSet.toEscapeRoom(): EscapeRoom {
     return EscapeRoom(

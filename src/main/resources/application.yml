@@ -1,4 +1,11 @@
 spring:
+  data:
+    redis:
+      port: 6380
+      host: localhost
+      password: redispassword
+      username: redisuser
+      userpassword: redisuserpassword
   datasource:
     url: jdbc:postgresql://localhost:5432/mydb
     username: myuser
@@ -6,3 +13,7 @@ spring:
 server:
   servlet:
     context-path: /api
+
+backup:
+  directory: /Users/ivanberezuckij/university/db/coursework/backups
+  dbName: mydb

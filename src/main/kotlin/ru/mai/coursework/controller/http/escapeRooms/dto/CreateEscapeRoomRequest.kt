@@ -12,4 +12,6 @@ data class CreateEscapeRoomRequest(
     val difficultyLevel: String? = null,
     val maxParticipants: Int?,
     val price: BigDecimal?,
+    val createdAt: LocalDateTime? = LocalDateTime.now(),
+    val updatedAt: LocalDateTime? = LocalDateTime.now(),
 )

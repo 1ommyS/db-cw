@@ -9,11 +9,11 @@ data class Role(
 ) : GrantedAuthority {
     override fun getAuthority(): String? = name
 
+}
 
-    fun ResultSet.toRole(): Role {
-        return Role(
-            id = getInt("id"),
-            name = getString("role_name")
-        )
-    }
+fun ResultSet.toRole(): Role {
+    return Role(
+        id = getInt("id"),
+        name = getString("role_name")
+    )
 }

@@ -15,9 +15,9 @@ class UserRepository(
     private val jdbcTemplate: JdbcTemplate, private val transactionTemplate: TransactionTemplate
 ) {
     suspend fun findByUsername(username: String): User? = withContext(Dispatchers.IO) {
-        jdbcTemplate.query(
-            """SELECT  
-                id, 
+        val query =  """
+            SELECT  
+                users.id, 
                 username,
                 password_hash,
                 email,
@@ -31,7 +31,10 @@ class UserRepository(
                 FROM users
                 JOIN roles r
                 ON users.role_id = r.id
-                WHERE username = ?""".trimMargin(),
+                WHERE username = ?
+                """.trim()
+        jdbcTemplate.query(
+           query,
             { rs, _ -> rs.toUser() },
             username
         ).firstOrNull()
@@ -40,12 +43,14 @@ class UserRepository(
     suspend fun save(user: User) = withContext(Dispatchers.IO) {
         transactionTemplate.executeWithoutResult {
             jdbcTemplate.update(
-                "INSERT INTO users (username, password_hash, fullname, email, phone) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO users (username, password_hash, fullname, email, phone, role_id, birth_date) VALUES (?, ?, ?, ?, ?)",
                 user.username,
                 user.password,
                 user.fullName,
                 user.email,
-                user.phone
+                user.phone,
+                user.role.id,
+                user.birthDate
             )
         }
     }

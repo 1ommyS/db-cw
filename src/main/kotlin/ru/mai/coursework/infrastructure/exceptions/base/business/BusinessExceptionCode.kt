@@ -10,5 +10,6 @@ enum class BusinessExceptionCode(
     BOOKING_ERROR("Ошибка при бронировании комнаты"),
     BOOKING_NOT_FOUND("Бронь не найдена"),
     PAYMENT_NOT_FOUND("Платеж не найден"),
+    BOOKED_NOT_BY_USER("Ошибка при отмене бронирования: бронирование оформлено другим пользователем"),
     ;
 }

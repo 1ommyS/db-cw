@@ -8,11 +8,11 @@ import ru.mai.coursework.infrastructure.repository.escapeRoom.EscapeRoomReposito
 
 @Service
 @Transactional
-class UpdateEscapeRoomOperation(
+class DeleteEscapeRoomOperation(
     private val escapeRoomRepository: EscapeRoomRepository
 ) {
     @Log
-    suspend fun invoke(id: Int, request: EscapeRoom) {
-        escapeRoomRepository.update(id, request)
+    suspend fun invoke(id: Int) {
+        escapeRoomRepository.delete(id)
     }
 }

@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import ru.mai.coursework.controller.http.auth.dto.AuthDto
 import ru.mai.coursework.controller.http.auth.dto.JwtResult
+import ru.mai.coursework.controller.http.auth.dto.RefreshTokenDto
 import ru.mai.coursework.controller.http.auth.dto.SignUpDto
 import ru.mai.coursework.infrastructure.aspects.Log
 import ru.mai.coursework.operations.auth.AuthOperation
 import ru.mai.coursework.operations.signup.SignUpOperation
+import ru.mai.coursework.operations.tokens.RefreshTokenOperation
 
 @RestController
 @Log
@@ -20,40 +22,55 @@ import ru.mai.coursework.operations.signup.SignUpOperation
 class AuthController(
     private val authOperation: AuthOperation,
     private val signUpOperation: SignUpOperation,
+    private val refreshTokenOperation: RefreshTokenOperation
 ) {
 
-    /**
-     * Аутентификация пользователя.
-     *
-     * @param userCredentials Данные для аутентификации пользователя.
-     * @return Токен для доступа к защищенным ресурсам.
-     */
     @Operation(summary = "Аутентификация пользователя", description = "Аутентификация пользователя по логину и паролю")
-    @PostMapping("/sign-in", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.TEXT_PLAIN_VALUE])
+    @PostMapping(
+        "/sign-in",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     suspend fun signIn(
         @RequestBody
         @Parameter(description = "Данные для аутентификации пользователя")
         userCredentials: AuthDto
     ): JwtResult {
-        return JwtResult(token = authOperation(userCredentials.login, userCredentials.password))
+        return authOperation(userCredentials.login, userCredentials.password)
     }
 
-    /**
-     * Регистрация нового пользователя.
-     *
-     * @param userCredentials Данные для регистрации нового пользователя.
-     * @return Токен для доступа к защищенным ресурсам.
-     */
     @Operation(
         summary = "Регистрация нового пользователя",
         description = "Регистрация нового пользователя по логину, паролю и другим данным"
     )
-    @PostMapping("/sign-up", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.TEXT_PLAIN_VALUE])
+    @PostMapping(
+        "/sign-up",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     suspend fun signUp(
         @RequestBody
         @Parameter(description = "Данные для регистрации нового пользователя")
         userCredentials: SignUpDto
     ): JwtResult {
-        return JwtResult(token = signUpOperation(userCredentials))
+        val tokens = signUpOperation(userCredentials)
+        return tokens
+    }
+
+    @Operation(
+        summary = "Обновление пары токенов",
+        description = "Обновляет access и refresh токены по переданному refresh токену"
+    )
+    @PostMapping(
+        "/refresh-token",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    suspend fun refreshToken(
+        @RequestBody
+        @Parameter(description = "Текущий refresh токен")
+        refreshTokenDto: RefreshTokenDto
+    ): JwtResult {
+        return refreshTokenOperation(refreshTokenDto)
     }
 }
