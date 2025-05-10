@@ -7,7 +7,7 @@ import ru.mai.coursework.infrastructure.repository.escapeRoom.EscapeRoomReposito
 
 @Service
 class GetAvailableEscapeRoomsOperation(
-    private val escapeRoomRepository: EscapeRoomRepository
+    private val escapeRoomRepository: EscapeRoomRepository,
 ) {
     @Log
     suspend operator fun invoke(): List<EscapeRoom> = escapeRoomRepository.getAvailableEscapeRooms()

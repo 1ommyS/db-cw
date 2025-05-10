@@ -22,55 +22,50 @@ import ru.mai.coursework.operations.tokens.RefreshTokenOperation
 class AuthController(
     private val authOperation: AuthOperation,
     private val signUpOperation: SignUpOperation,
-    private val refreshTokenOperation: RefreshTokenOperation
+    private val refreshTokenOperation: RefreshTokenOperation,
 ) {
-
     @Operation(summary = "Аутентификация пользователя", description = "Аутентификация пользователя по логину и паролю")
     @PostMapping(
         "/sign-in",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.APPLICATION_JSON_VALUE],
     )
     suspend fun signIn(
         @RequestBody
         @Parameter(description = "Данные для аутентификации пользователя")
-        userCredentials: AuthDto
-    ): JwtResult {
-        return authOperation(userCredentials.login, userCredentials.password)
-    }
+        userCredentials: AuthDto,
+    ): JwtResult = authOperation(userCredentials.login, userCredentials.password)
 
     @Operation(
         summary = "Регистрация нового пользователя",
-        description = "Регистрация нового пользователя по логину, паролю и другим данным"
+        description = "Регистрация нового пользователя по логину, паролю и другим данным",
     )
     @PostMapping(
         "/sign-up",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.APPLICATION_JSON_VALUE],
     )
     suspend fun signUp(
         @RequestBody
         @Parameter(description = "Данные для регистрации нового пользователя")
-        userCredentials: SignUpDto
+        userCredentials: SignUpDto,
     ): JwtResult {
-        val tokens = signUpOperation(userCredentials)
+        val tokens = signUpOperation(user = userCredentials)
         return tokens
     }
 
     @Operation(
         summary = "Обновление пары токенов",
-        description = "Обновляет access и refresh токены по переданному refresh токену"
+        description = "Обновляет access и refresh токены по переданному refresh токену",
     )
     @PostMapping(
         "/refresh-token",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.APPLICATION_JSON_VALUE],
     )
     suspend fun refreshToken(
         @RequestBody
         @Parameter(description = "Текущий refresh токен")
-        refreshTokenDto: RefreshTokenDto
-    ): JwtResult {
-        return refreshTokenOperation(refreshTokenDto)
-    }
+        refreshTokenDto: RefreshTokenDto,
+    ): JwtResult = refreshTokenOperation(refreshTokenDto)
 }

@@ -9,16 +9,15 @@ import org.springframework.stereotype.Component
 @Aspect
 @Component
 class LoggingAspect {
-
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @Pointcut("@annotation(ru.mai.coursework.infrastructure.aspects.Log) || @within(ru.mai.coursework.infrastructure.aspects.Log)")
-    fun logAnnotationPointcut() {
+    suspend fun logAnnotationPointcut() {
         // Поинткат для методов и классов, помеченных @Log
     }
 
     @Before("logAnnotationPointcut()")
-    fun logBefore(joinPoint: JoinPoint) {
+    suspend fun logBefore(joinPoint: JoinPoint) {
         val methodSignature = joinPoint.signature as MethodSignature
         val className = methodSignature.declaringType.simpleName
         val methodName = methodSignature.name
@@ -28,7 +27,10 @@ class LoggingAspect {
     }
 
     @AfterReturning(pointcut = "logAnnotationPointcut()", returning = "result")
-    fun logAfterReturning(joinPoint: JoinPoint, result: Any?) {
+    suspend fun logAfterReturning(
+        joinPoint: JoinPoint,
+        result: Any?,
+    ) {
         val methodSignature = joinPoint.signature as MethodSignature
         val className = methodSignature.declaringType.simpleName
         val methodName = methodSignature.name
@@ -37,7 +39,10 @@ class LoggingAspect {
     }
 
     @AfterThrowing(pointcut = "logAnnotationPointcut()", throwing = "exception")
-    fun logAfterThrowing(joinPoint: JoinPoint, exception: Throwable) {
+    suspend fun logAfterThrowing(
+        joinPoint: JoinPoint,
+        exception: Throwable,
+    ) {
         val methodSignature = joinPoint.signature as MethodSignature
         val className = methodSignature.declaringType.simpleName
         val methodName = methodSignature.name
@@ -46,7 +51,7 @@ class LoggingAspect {
     }
 
     @After("logAnnotationPointcut()")
-    fun logAfter(joinPoint: JoinPoint) {
+    suspend fun logAfter(joinPoint: JoinPoint) {
         val methodSignature = joinPoint.signature as MethodSignature
         val className = methodSignature.declaringType.simpleName
         val methodName = methodSignature.name

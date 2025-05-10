@@ -7,9 +7,11 @@ import ru.mai.coursework.controller.http.auth.dto.JwtResult
 import ru.mai.coursework.controller.http.auth.dto.SignUpDto
 import ru.mai.coursework.entity.User
 import ru.mai.coursework.infrastructure.aspects.Log
+import ru.mai.coursework.infrastructure.configuration.redis.RedisConfig.Companion.CHANNEL_TOPIC_NAME
 import ru.mai.coursework.infrastructure.configuration.security.providers.JwtTokenProvider
 import ru.mai.coursework.infrastructure.exceptions.base.business.BusinessException
 import ru.mai.coursework.infrastructure.exceptions.base.business.BusinessExceptionCode
+import ru.mai.coursework.infrastructure.pubsub.RedisPublisher
 import ru.mai.coursework.infrastructure.repository.user.UserRepository
 import ru.mai.coursework.operations.role.RoleOperation
 import ru.mai.coursework.utils.saveRefreshToken
@@ -20,7 +22,8 @@ class SignUpOperation(
     private val roleOperation: RoleOperation,
     private val passwordEncoder: PasswordEncoder,
     private val jwtTokenProvider: JwtTokenProvider,
-    private val redisTemplate: RedisTemplate<String, String>
+    private val redisTemplate: RedisTemplate<String, String>,
+    private val redisPublisher: RedisPublisher,
 ) {
     @Log
     suspend operator fun invoke(user: SignUpDto): JwtResult {
@@ -29,15 +32,16 @@ class SignUpOperation(
         }
 
         val passwordHash = passwordEncoder.encode(user.password)
-        val newUser = User(
-            username = user.username,
-            passwordHash = passwordHash,
-            fullName = user.fullName,
-            email = user.email,
-            birthDate = user.birthDate,
-            phone = user.phone,
-            role = roleOperation.getClientRole(),
-        )
+        val newUser =
+            User(
+                username = user.username,
+                passwordHash = passwordHash,
+                fullName = user.fullName,
+                email = user.email,
+                birthDate = user.birthDate,
+                phone = user.phone,
+                role = roleOperation.getClientRole(),
+            )
 
         userRepository.save(newUser)
 
@@ -46,7 +50,8 @@ class SignUpOperation(
 
         redisTemplate.saveRefreshToken(newUser.username, refreshToken)
 
+        redisPublisher.publish(CHANNEL_TOPIC_NAME, "Пользователь ${newUser.username} зарегистрировался")
+
         return JwtResult(accessToken, refreshToken)
     }
-
 }

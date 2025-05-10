@@ -1,4 +1,4 @@
-package ru.mai.coursework.operations.payment;
+package ru.mai.coursework.operations.payment
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -10,7 +10,7 @@ import ru.mai.coursework.infrastructure.repository.payment.PaymentRepository
 @Log
 @Transactional
 class CreatePaymentOperation(
-    private val paymentRepository: PaymentRepository
+    private val paymentRepository: PaymentRepository,
 ) {
     suspend fun invoke(payment: Payment) {
         paymentRepository.create(payment)

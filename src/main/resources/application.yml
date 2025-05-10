@@ -1,7 +1,7 @@
 spring:
   data:
     redis:
-      port: 6380
+      port: 6381
       host: localhost
       password: redispassword
       username: redisuser

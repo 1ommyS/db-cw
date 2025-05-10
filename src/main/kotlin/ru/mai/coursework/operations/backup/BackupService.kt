@@ -1,7 +1,6 @@
 package ru.mai.coursework.operations.backup
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -16,7 +15,10 @@ import java.time.LocalDate
 
 @Service
 @Log
-data class BackupService(val taskPublisher: TaskPublisher, val backupRepository: BackupRepository) {
+data class BackupService(
+    val taskPublisher: TaskPublisher,
+    val backupRepository: BackupRepository,
+) {
     private val logger = LoggerFactory.getLogger(BackupService::class.java.name)
 
     @Value("\${backup.directory:/path/to/backup/directory}")
@@ -75,9 +77,7 @@ data class BackupService(val taskPublisher: TaskPublisher, val backupRepository:
         taskPublisher.submit(restoreCommand, TIMEOUT_MILLIS)
     }
 
-    fun findAll(): List<Backup> {
-        return backupRepository.findAll()
-    }
+    suspend fun findAll(): List<Backup> = backupRepository.findAll()
 
     companion object {
         private const val TIMEOUT_MILLIS = (60 * 1000).toLong()

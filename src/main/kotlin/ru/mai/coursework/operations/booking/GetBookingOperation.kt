@@ -14,12 +14,12 @@ import ru.mai.coursework.operations.user.FindUsersOperation
 @Transactional
 class GetBookingOperation(
     private val bookingRepository: BookingRepository,
-    private val usersOperation: FindUsersOperation
+    private val usersOperation: FindUsersOperation,
 ) {
-
     suspend operator fun invoke(bookingId: Int): GetBookingResponse {
-        val booking = bookingRepository.findById(bookingId)
-            ?: throw BusinessException(BusinessExceptionCode.BOOKING_NOT_FOUND)
+        val booking =
+            bookingRepository.findById(bookingId)
+                ?: throw BusinessException(BusinessExceptionCode.BOOKING_NOT_FOUND)
         val bookingOwner = usersOperation.findById(booking.userId)
 
         return GetBookingResponse(
@@ -27,8 +27,7 @@ class GetBookingOperation(
             user = bookingOwner.fullName,
             timeSlotId = booking.timeSlotId,
             bookingTime = booking.bookingTime,
-            status = booking.status
+            status = booking.status,
         )
     }
-
 }

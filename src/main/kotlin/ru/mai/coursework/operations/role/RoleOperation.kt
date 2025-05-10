@@ -11,10 +11,6 @@ import ru.mai.coursework.infrastructure.repository.role.RoleRepository
 class RoleOperation(
     private val roleRepository: RoleRepository,
 ) {
-
     @Log
-    suspend fun getClientRole(): Role {
-        return roleRepository.getClientRole() ?: throw BusinessException(BusinessExceptionCode.ROLE_NOT_FOUND)
-    }
-
+    suspend fun getClientRole(): Role = roleRepository.getClientRole() ?: throw BusinessException(BusinessExceptionCode.ROLE_NOT_FOUND)
 }

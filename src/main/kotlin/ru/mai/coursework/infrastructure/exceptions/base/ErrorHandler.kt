@@ -12,16 +12,14 @@ import ru.mai.coursework.infrastructure.exceptions.base.validation.ValidationExc
 @ControllerAdvice
 class ErrorHandler : ResponseEntityExceptionHandler() {
     @ExceptionHandler(BusinessException::class)
-    fun handleBusinessException(ex: BusinessException): ResponseEntity<String?> {
-        return ResponseEntity<String?>(ex.message, HttpStatus.BAD_REQUEST)
-    }
+    suspend fun handleBusinessException(ex: BusinessException): ResponseEntity<String?> =
+        ResponseEntity<String?>(ex.message, HttpStatus.BAD_REQUEST)
 
     @ExceptionHandler(InvocationException::class)
-    fun handleInvocationException(ex: InvocationException): ResponseEntity<String?> {
-        return ResponseEntity<String?>(ex.message, HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    suspend fun handleInvocationException(ex: InvocationException): ResponseEntity<String?> =
+        ResponseEntity<String?>(ex.message, HttpStatus.INTERNAL_SERVER_ERROR)
+
     @ExceptionHandler(ValidationException::class)
-    fun handleInvocationException(ex: ValidationException): ResponseEntity<String?> {
-        return ResponseEntity<String?>(ex.message, HttpStatus.INTERNAL_SERVER_ERROR)
-    }
+    suspend fun handleInvocationException(ex: ValidationException): ResponseEntity<String?> =
+        ResponseEntity<String?>(ex.message, HttpStatus.INTERNAL_SERVER_ERROR)
 }

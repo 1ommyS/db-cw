@@ -8,15 +8,14 @@ data class TimeSlot(
     val escapeRoomId: Int,
     val startTime: LocalDateTime,
     val endTime: LocalDateTime,
-    val isAvailable: Boolean
+    val isAvailable: Boolean,
 )
 
-fun ResultSet.toTimeSlot(): TimeSlot {
-    return TimeSlot(
+fun ResultSet.toTimeSlot(): TimeSlot =
+    TimeSlot(
         id = getInt("id"),
         escapeRoomId = getInt("escape_room_id"),
         startTime = getTimestamp("start_time").toLocalDateTime(),
         endTime = getTimestamp("end_time").toLocalDateTime(),
-        isAvailable = getBoolean("is_available")
+        isAvailable = getBoolean("is_available"),
     )
-}

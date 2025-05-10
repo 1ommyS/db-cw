@@ -5,9 +5,13 @@ package ru.mai.coursework.infrastructure.aspects
 annotation class Log(
     val level: LogLevel = LogLevel.INFO,
     val logArgs: Boolean = true,
-    val logResult: Boolean = true
+    val logResult: Boolean = true,
 )
 
 enum class LogLevel {
-    TRACE, DEBUG, INFO, WARN, ERROR
+    TRACE,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR,
 }

@@ -11,19 +11,18 @@ import ru.mai.coursework.infrastructure.exceptions.base.invocation.InvocationExc
 
 @Repository
 class RoleRepository(
-    private val jdbcTemplate: JdbcTemplate
+    private val jdbcTemplate: JdbcTemplate,
 ) {
-    suspend fun getClientRole(): Role? {
-        return withContext(Dispatchers.IO) {
+    suspend fun getClientRole(): Role? =
+        withContext(Dispatchers.IO) {
             try {
-                jdbcTemplate.query(
-                    "SELECT * FROM roles WHERE role_name = 'CLIENT'",
-                ) { rs, _ -> rs.toRole() }.firstOrNull()
+                jdbcTemplate
+                    .query(
+                        "SELECT * FROM roles WHERE role_name = 'CLIENT'",
+                    ) { rs, _ -> rs.toRole() }
+                    .firstOrNull()
             } catch (exception: Exception) {
                 throw InvocationException(InvocationExceptionCode.GET_ROLE_ERROR)
             }
         }
-    }
-
-
 }

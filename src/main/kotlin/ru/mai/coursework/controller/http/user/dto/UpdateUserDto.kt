@@ -12,10 +12,9 @@ data class UpdateUserDto(
     var password: String?,
     val birthDate: Date,
     val phone: String?,
-    val roleId: Int?
+    val roleId: Int?,
 ) {
-
-    fun encodePasswordIfNeccessary(passwordEncoder: PasswordEncoder) {
+    suspend fun encodePasswordIfNeccessary(passwordEncoder: PasswordEncoder) {
         password = password?.encode(encoder = passwordEncoder)
     }
 }

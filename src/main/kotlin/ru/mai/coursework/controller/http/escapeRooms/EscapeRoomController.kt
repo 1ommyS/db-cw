@@ -20,9 +20,8 @@ class EscapeRoomController(
     private val createEscapeRoom: CreateEscapeRoomOperation,
     private val updateEscapeRoom: UpdateEscapeRoomOperation,
     private val deleteEscapeRoom: DeleteEscapeRoomOperation,
-    private val escapeRoomMapper: EscapeRoomMapper
+    private val escapeRoomMapper: EscapeRoomMapper,
 ) {
-
     @GetMapping("/available")
     @Operation(summary = "Получить список всех доступных комнат", description = "Получает список всех доступных комнат")
     @PreAuthorize("isAuthenticated()")
@@ -43,10 +42,10 @@ class EscapeRoomController(
     @Operation(summary = "Создать новую комнату", description = "Создает новую комнату по переданным данным")
     @PreAuthorize("hasRole('ADMIN')")
     suspend fun createEscapeRoom(
-        @RequestBody request: CreateEscapeRoomRequest
+        @RequestBody request: CreateEscapeRoomRequest,
     ) {
         createEscapeRoom.invoke(
-            escapeRoomMapper.toEntity(request)
+            escapeRoomMapper.toEntity(request),
         )
     }
 
@@ -54,7 +53,7 @@ class EscapeRoomController(
     @PreAuthorize("hasRole('ADMIN')")
     suspend fun updateEscapeRoom(
         @PathVariable id: Int,
-        @RequestBody request: UpdateEscapeRoomRequest
+        @RequestBody request: UpdateEscapeRoomRequest,
     ) {
         val mappedRequest = escapeRoomMapper.toEntity(request)
         updateEscapeRoom.invoke(id, mappedRequest)
@@ -65,6 +64,6 @@ class EscapeRoomController(
     suspend fun deleteEscapeRoom(
         @PathVariable id: Int,
     ) {
-       deleteEscapeRoom.invoke(id)
+        deleteEscapeRoom.invoke(id)
     }
 }

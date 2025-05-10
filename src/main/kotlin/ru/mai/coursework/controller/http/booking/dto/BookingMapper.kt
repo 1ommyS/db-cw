@@ -5,11 +5,13 @@ import ru.mai.coursework.entity.Booking
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 abstract class BookingMapper {
+    abstract suspend fun toEntity(getBookingResponse: GetBookingResponse): Booking
 
-    abstract fun toEntity(getBookingResponse: GetBookingResponse): Booking
-
-    abstract fun toDto(booking: Booking): GetBookingResponse
+    abstract suspend fun toDto(booking: Booking): GetBookingResponse
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    abstract fun partialUpdate(getBookingResponse: GetBookingResponse, @MappingTarget booking: Booking): Booking
+    abstract suspend fun partialUpdate(
+        getBookingResponse: GetBookingResponse,
+        @MappingTarget booking: Booking,
+    ): Booking
 }

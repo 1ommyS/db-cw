@@ -12,10 +12,11 @@ import ru.mai.coursework.infrastructure.repository.user.UserRepository
 @Log
 class UpdateUserOperation(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
 ) {
-    suspend operator fun invoke(user: UpdateUserDto) = withContext(Dispatchers.IO) {
-        user.encodePasswordIfNeccessary(passwordEncoder)
-        userRepository.update(user)
-    }
+    suspend operator fun invoke(user: UpdateUserDto) =
+        withContext(Dispatchers.IO) {
+            user.encodePasswordIfNeccessary(passwordEncoder)
+            userRepository.update(user)
+        }
 }

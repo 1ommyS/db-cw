@@ -10,7 +10,7 @@ import ru.mai.coursework.utils.saveRefreshToken
 @Service
 data class RefreshTokenOperation(
     private val jwtTokenProvider: JwtTokenProvider,
-    private val redisTemplate: RedisTemplate<String, String>
+    private val redisTemplate: RedisTemplate<String, String>,
 ) {
     suspend operator fun invoke(refreshTokenDto: RefreshTokenDto): JwtResult {
         val username = jwtTokenProvider.getUsernameFromRefreshToken(refreshTokenDto.refreshToken)
@@ -27,8 +27,7 @@ data class RefreshTokenOperation(
 
         return JwtResult(
             accessToken = newAccessToken,
-            refreshToken = newRefreshToken
+            refreshToken = newRefreshToken,
         )
     }
-
 }

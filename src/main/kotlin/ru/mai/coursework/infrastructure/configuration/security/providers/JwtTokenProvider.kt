@@ -21,7 +21,8 @@ class JwtTokenProvider {
         val now = Date()
         val expiryDate = Date(now.time + ExpirationMs)
 
-        return Jwts.builder()
+        return Jwts
+            .builder()
             .setSubject(username)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
@@ -33,7 +34,8 @@ class JwtTokenProvider {
         val now = Date()
         val expiryDate = Date(now.time + RefreshExpirationMs)
 
-        return Jwts.builder()
+        return Jwts
+            .builder()
             .setSubject(username)
             .setIssuedAt(now)
             .setExpiration(expiryDate)
@@ -42,30 +44,48 @@ class JwtTokenProvider {
     }
 
     fun getUsernameFromJWT(token: String): String {
-        val claims = Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token).body
+        val claims =
+            Jwts
+                .parserBuilder()
+                .setSigningKey(jwtSecret)
+                .build()
+                .parseClaimsJws(token)
+                .body
         return claims.subject
     }
 
     fun getUsernameFromRefreshToken(refreshToken: String): String {
-        val claims = Jwts.parserBuilder().setSigningKey(jwtRefreshSecret).build().parseClaimsJws(refreshToken).body
+        val claims =
+            Jwts
+                .parserBuilder()
+                .setSigningKey(jwtRefreshSecret)
+                .build()
+                .parseClaimsJws(refreshToken)
+                .body
         return claims.subject
     }
 
-    fun validateToken(token: String): Boolean {
-        return try {
-            Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token)
+    fun validateToken(token: String): Boolean =
+        try {
+            Jwts
+                .parserBuilder()
+                .setSigningKey(jwtSecret)
+                .build()
+                .parseClaimsJws(token)
             true
         } catch (ex: Exception) {
             false
         }
-    }
 
-    fun validateRefreshToken(refreshToken: String): Boolean {
-        return try {
-            Jwts.parserBuilder().setSigningKey(jwtRefreshSecret).build().parseClaimsJws(refreshToken)
+    fun validateRefreshToken(refreshToken: String): Boolean =
+        try {
+            Jwts
+                .parserBuilder()
+                .setSigningKey(jwtRefreshSecret)
+                .build()
+                .parseClaimsJws(refreshToken)
             true
         } catch (ex: Exception) {
             false
         }
-    }
 }

@@ -9,10 +9,11 @@ import ru.mai.coursework.infrastructure.repository.user.UserRepository
 @Service
 @Log
 class FindUsersOperation(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     suspend fun findAll() = userRepository.findAll()
-    suspend fun findById(id: Int) = userRepository.findById(id)
-        ?: throw BusinessException(BusinessExceptionCode.USER_NOT_FOUND)
 
+    suspend fun findById(id: Int) =
+        userRepository.findById(id)
+            ?: throw BusinessException(BusinessExceptionCode.USER_NOT_FOUND)
 }

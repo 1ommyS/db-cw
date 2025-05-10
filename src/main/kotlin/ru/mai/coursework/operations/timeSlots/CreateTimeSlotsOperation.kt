@@ -10,8 +10,7 @@ import ru.mai.coursework.infrastructure.repository.timeSlots.TimeSlotsRepository
 @Log
 @Transactional
 class CreateTimeSlotsOperation(
-    private val timeSlotsRepository: TimeSlotsRepository
+    private val timeSlotsRepository: TimeSlotsRepository,
 ) {
-    suspend operator fun invoke(timeSlots: CreateTimeSlotsRequest) =
-        timeSlotsRepository.createTimeSlots(timeSlots.data)
+    suspend operator fun invoke(timeSlots: CreateTimeSlotsRequest) = timeSlotsRepository.createTimeSlots(timeSlots.data)
 }

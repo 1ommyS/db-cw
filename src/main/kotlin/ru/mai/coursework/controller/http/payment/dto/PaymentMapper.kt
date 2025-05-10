@@ -5,6 +5,5 @@ import ru.mai.coursework.entity.Payment
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 abstract class PaymentMapper {
-
-    abstract fun toEntity(createPaymentRequest: CreatePaymentRequest): Payment
+    abstract suspend fun toEntity(createPaymentRequest: CreatePaymentRequest): Payment
 }

@@ -10,14 +10,14 @@ import org.springframework.web.filter.CorsFilter
 open class CustomCorsFilter {
     @Bean
     open fun corsFilter(): CorsFilter {
-        val config = CorsConfiguration();
-        config.allowCredentials = true;
-        config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        val config = CorsConfiguration()
+        config.allowCredentials = true
+        config.addAllowedOrigin("http://localhost:3000")
+        config.addAllowedHeader("*")
+        config.addAllowedMethod("*")
 
-        val source = UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return CorsFilter(source);
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", config)
+        return CorsFilter(source)
     }
 }

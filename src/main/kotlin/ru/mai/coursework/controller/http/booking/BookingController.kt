@@ -22,7 +22,6 @@ class BookingController(
     private val getBookingOperation: GetBookingOperation,
     private val cancelBookingOperation: CancelBookingOperation,
 ) {
-
     /**
      * Создает новое бронирование.
      *
@@ -35,10 +34,8 @@ class BookingController(
     suspend fun createBooking(
         @RequestBody
         @Parameter(description = "Данные для создания нового бронирования")
-        request: CreateBookingRequest
-    ) {
-        return createBookingOperation(request)
-    }
+        request: CreateBookingRequest,
+    ) = createBookingOperation(request)
 
     /**
      * Получает бронирование по идентификатору.
@@ -48,25 +45,25 @@ class BookingController(
      */
     @Operation(
         summary = "Получить бронирование по идентификатору",
-        description = "Получает бронирование по переданному идентификатору"
+        description = "Получает бронирование по переданному идентификатору",
     )
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/{bookingId}", produces = [MediaType.APPLICATION_JSON_VALUE])
     suspend fun getBooking(
         @PathVariable
         @Parameter(description = "Идентификатор бронирования")
-        bookingId: Int
+        bookingId: Int,
     ): GetBookingResponse = getBookingOperation(bookingId)
 
     @Operation(
         summary = "Отменить бронирование",
-        description = "Отменяет бронирование по переданному идентификатору"
+        description = "Отменяет бронирование по переданному идентификатору",
     )
     @DeleteMapping("/{bookingId}")
     @PreAuthorize("isAuthenticated()")
     suspend fun cancelBooking(
         @PathVariable bookingId: Int,
-        @AuthenticationPrincipal user: User
+        @AuthenticationPrincipal user: User,
     ) {
         cancelBookingOperation(bookingId, user.id)
     }

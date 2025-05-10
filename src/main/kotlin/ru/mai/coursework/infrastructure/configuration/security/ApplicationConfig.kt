@@ -13,32 +13,32 @@ import ru.mai.coursework.infrastructure.repository.user.UserRepository
 
 @Configuration
 class ApplicationConfig(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     @Bean
-    fun passwordEncoder() = BCryptPasswordEncoder();
+    fun passwordEncoder() = BCryptPasswordEncoder()
 
     @Bean
-    fun userDetailsService(): UserDetailsService = UserDetailsService { username ->
-        runBlocking {
-            val user = userRepository.findByUsername(username)
-                ?: throw UsernameNotFoundException("User not found with username: $username")
+    fun userDetailsService(): UserDetailsService =
+        UserDetailsService { username ->
+            runBlocking {
+                val user =
+                    userRepository.findByUsername(username)
+                        ?: throw UsernameNotFoundException("User not found with username: $username")
 
-            return@runBlocking user
+                return@runBlocking user
+            }
         }
-    }
 
     @Bean
-    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
-        return authenticationConfiguration.authenticationManager
-    }
-
+    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager =
+        authenticationConfiguration.authenticationManager
 
     @Bean
     fun authenticationProvider(): DaoAuthenticationProvider {
-        val provider = DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
+        val provider = DaoAuthenticationProvider()
+        provider.setUserDetailsService(userDetailsService())
+        provider.setPasswordEncoder(passwordEncoder())
+        return provider
     }
 }

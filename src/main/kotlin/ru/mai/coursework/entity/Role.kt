@@ -5,15 +5,13 @@ import java.sql.ResultSet
 
 data class Role(
     val id: Int,
-    val name: String
+    val name: String,
 ) : GrantedAuthority {
     override fun getAuthority(): String? = name
-
 }
 
-fun ResultSet.toRole(): Role {
-    return Role(
+fun ResultSet.toRole(): Role =
+    Role(
         id = getInt("id"),
-        name = getString("role_name")
+        name = getString("role_name"),
     )
-}

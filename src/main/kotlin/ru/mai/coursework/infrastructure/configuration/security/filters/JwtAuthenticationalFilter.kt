@@ -15,15 +15,14 @@ import java.util.logging.Logger
 @Component
 class JwtAuthenticationFilter(
     private val tokenProvider: JwtTokenProvider,
-    private val userDetailsService: UserDetailsService
+    private val userDetailsService: UserDetailsService,
 ) : OncePerRequestFilter() {
-
     private val logger: Logger = Logger.getLogger(JwtAuthenticationFilter::class.java.name)
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         try {
             val jwt = getJwtFromRequest(request)
@@ -37,22 +36,29 @@ class JwtAuthenticationFilter(
         filterChain.doFilter(request, response)
     }
 
-
     private fun getJwtFromRequest(request: HttpServletRequest): String? {
         val bearerToken = request.getHeader("Authorization")
         return if (!bearerToken.isNullOrEmpty() && bearerToken.startsWith("Bearer ")) {
             bearerToken.substring(7)
-        } else null
+        } else {
+            null
+        }
     }
 
-    private fun setAuthenticationContext(jwt: String, request: HttpServletRequest) {
+    private fun setAuthenticationContext(
+        jwt: String,
+        request: HttpServletRequest,
+    ) {
         val username = tokenProvider.getUsernameFromJWT(jwt)
         val userDetails = userDetailsService.loadUserByUsername(username)
 
         if (userDetails != null) {
-            val authentication = UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.authorities
-            )
+            val authentication =
+                UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.authorities,
+                )
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
             SecurityContextHolder.getContext().authentication = authentication
         }

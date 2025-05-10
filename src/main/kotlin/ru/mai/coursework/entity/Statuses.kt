@@ -1,14 +1,13 @@
 package ru.mai.coursework.entity
 
-
 enum class BookingStatus {
     PENDING,
     CONFIRMED,
-    CANCELLED
+    CANCELLED,
 }
 
 enum class PaymentStatus {
     PENDING,
     SUCCESSFUL,
-    FAILED
+    FAILED,
 }

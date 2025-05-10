@@ -13,17 +13,17 @@ import java.time.LocalDateTime
 @Log
 @Transactional
 class CreateBookingOperation(
-    private val bookingRepository: BookingRepository
+    private val bookingRepository: BookingRepository,
 ) {
-
     suspend operator fun invoke(request: CreateBookingRequest) {
-        val booking = Booking(
-            userId = request.userId,
-            timeSlotId = request.timeSlotId,
-            bookingTime = LocalDateTime.now(),
-            status = BookingStatus.PENDING,
-            bookingId = null
-        )
+        val booking =
+            Booking(
+                userId = request.userId,
+                timeSlotId = request.timeSlotId,
+                bookingTime = LocalDateTime.now(),
+                status = BookingStatus.PENDING,
+                bookingId = null,
+            )
         bookingRepository.save(booking)
     }
 }

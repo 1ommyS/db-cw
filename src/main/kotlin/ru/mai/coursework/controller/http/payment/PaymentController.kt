@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import ru.mai.coursework.controller.http.payment.dto.CreatePaymentRequest
 import ru.mai.coursework.controller.http.payment.dto.PaymentMapper
-import ru.mai.coursework.entity.Payment
 import ru.mai.coursework.infrastructure.aspects.Log
 import ru.mai.coursework.operations.payment.CreatePaymentOperation
 import ru.mai.coursework.operations.payment.GetPaymentOperation
@@ -20,7 +19,6 @@ class PaymentController(
     private val getPaymentOperation: GetPaymentOperation,
     private val paymentMapper: PaymentMapper,
 ) {
-
     /**
      * Создает новый платеж.
      *
@@ -33,11 +31,9 @@ class PaymentController(
     suspend fun createPayment(
         @RequestBody
         @Parameter(description = "Данные для создания нового платежа")
-        request: CreatePaymentRequest
+        request: CreatePaymentRequest,
     ) {
-        val payment = paymentMapper.toEntity(request)
+        val payment = request.toEntity()
         createPaymentOperation.invoke(payment)
     }
-
 }
-

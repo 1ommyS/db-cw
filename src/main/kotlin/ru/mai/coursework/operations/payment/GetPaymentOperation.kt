@@ -10,9 +10,7 @@ import ru.mai.coursework.infrastructure.repository.payment.PaymentRepository
 @Log
 @Transactional
 class GetPaymentOperation(
-    private val paymentRepository: PaymentRepository
+    private val paymentRepository: PaymentRepository,
 ) {
-    suspend fun invoke(paymentId: Int): Payment {
-        return paymentRepository.getPayment(paymentId)
-    }
+    suspend fun invoke(paymentId: Int): Payment = paymentRepository.getPayment(paymentId)
 }

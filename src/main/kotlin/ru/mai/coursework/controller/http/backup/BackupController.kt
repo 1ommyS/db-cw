@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:no-wildcard-imports")
+
 package ru.mai.coursework.controller.http.backup
 
 import org.springframework.core.io.FileSystemResource
@@ -17,8 +19,9 @@ import java.nio.file.Paths
 @RestController
 @Log
 @RequestMapping("/backup")
-data class BackupController(val backupService: BackupService) {
-
+data class BackupController(
+    val backupService: BackupService,
+) {
     @PostMapping
     suspend fun createBackup(): Any {
         try {
@@ -33,7 +36,9 @@ data class BackupController(val backupService: BackupService) {
     }
 
     @PostMapping("/restore")
-    suspend fun restoreBackup(@RequestParam("fileName") fileName: String): ResponseEntity<String> {
+    suspend fun restoreBackup(
+        @RequestParam("fileName") fileName: String,
+    ): ResponseEntity<String> {
         try {
             if (!StringUtils.hasText(fileName) || fileName.contains("..") || !fileName.endsWith(".dump")) {
                 return ResponseEntity.badRequest().body<String>("Некорректное имя файла.")
@@ -48,13 +53,16 @@ data class BackupController(val backupService: BackupService) {
             return ResponseEntity.ok("База данных успешно восстановлена из бэкапа: $fileName")
         } catch (e: Exception) {
             e.printStackTrace()
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("Ошибка при восстановлении бэкапа: " + e.message)
         }
     }
 
     @GetMapping("/download")
-    fun downloadBackup(@RequestParam("fileName") fileName: String): ResponseEntity<Resource> {
+    suspend fun downloadBackup(
+        @RequestParam("fileName") fileName: String,
+    ): ResponseEntity<Resource> {
         try {
             if (!StringUtils.hasText(fileName) || fileName.contains("..") || !fileName.endsWith(".dump")) {
                 return ResponseEntity.badRequest().body<Resource>(null)
@@ -71,7 +79,8 @@ data class BackupController(val backupService: BackupService) {
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"$fileName\"")
             headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
 
-            return ResponseEntity.ok()
+            return ResponseEntity
+                .ok()
                 .headers(headers)
                 .contentLength(resource.contentLength())
                 .body<Resource>(resource)
@@ -81,9 +90,6 @@ data class BackupController(val backupService: BackupService) {
         }
     }
 
-
     @GetMapping("/list")
-    fun findAll(): List<Backup> {
-        return backupService.findAll()
-    }
+    suspend fun findAll(): List<Backup> = backupService.findAll()
 }

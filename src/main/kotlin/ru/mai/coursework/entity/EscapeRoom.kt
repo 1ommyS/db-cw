@@ -12,10 +12,11 @@ data class EscapeRoom(
     val maxParticipants: Int,
     val price: BigDecimal,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
 )
-fun ResultSet.toEscapeRoom(): EscapeRoom {
-    return EscapeRoom(
+
+fun ResultSet.toEscapeRoom(): EscapeRoom =
+    EscapeRoom(
         id = getInt("id"),
         name = getString("name"),
         description = getString("description"),
@@ -23,6 +24,5 @@ fun ResultSet.toEscapeRoom(): EscapeRoom {
         maxParticipants = getInt("max_participants"),
         price = getBigDecimal("price"),
         createdAt = getTimestamp("created_at").toLocalDateTime(),
-        updatedAt = getTimestamp("updated_at").toLocalDateTime()
+        updatedAt = getTimestamp("updated_at").toLocalDateTime(),
     )
-}

@@ -1,4 +1,4 @@
-package ru.mai.coursework.operations.escapeRooms;
+package ru.mai.coursework.operations.escapeRooms
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -11,10 +11,11 @@ import ru.mai.coursework.infrastructure.repository.escapeRoom.EscapeRoomReposito
 @Service
 @Transactional
 class CreateEscapeRoomOperation(
-    private val escapeRoomRepository: EscapeRoomRepository
+    private val escapeRoomRepository: EscapeRoomRepository,
 ) {
     @Log
-    suspend fun invoke(entity: EscapeRoom) = withContext(Dispatchers.IO) {
-        escapeRoomRepository.save(entity)
-    }
+    suspend fun invoke(entity: EscapeRoom) =
+        withContext(Dispatchers.IO) {
+            escapeRoomRepository.save(entity)
+        }
 }

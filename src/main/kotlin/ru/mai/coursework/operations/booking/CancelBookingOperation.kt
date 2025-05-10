@@ -6,12 +6,17 @@ import ru.mai.coursework.infrastructure.exceptions.base.business.BusinessExcepti
 import ru.mai.coursework.infrastructure.repository.booking.BookingRepository
 
 @Service
-data class CancelBookingOperation(val repository: BookingRepository) {
-
-    suspend operator fun invoke(bookingId: Int, userId: Int) {
+data class CancelBookingOperation(
+    val repository: BookingRepository,
+) {
+    suspend operator fun invoke(
+        bookingId: Int,
+        userId: Int,
+    ) {
         val isBookedByUser = repository.isBookedByUser(bookingId, userId)
-        if (isBookedByUser)
+        if (isBookedByUser) {
             throw BusinessException(BusinessExceptionCode.BOOKED_NOT_BY_USER)
+        }
 
         repository.cancelBooking(bookingId)
     }

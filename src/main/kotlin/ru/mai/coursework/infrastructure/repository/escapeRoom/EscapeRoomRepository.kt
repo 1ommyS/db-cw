@@ -3,7 +3,6 @@ package ru.mai.coursework.infrastructure.repository.escapeRoom
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.jdbc.core.queryForObject
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.support.TransactionTemplate
 import ru.mai.coursework.entity.EscapeRoom
@@ -12,20 +11,20 @@ import ru.mai.coursework.entity.toEscapeRoom
 @Repository
 class EscapeRoomRepository(
     private val jdbcTemplate: JdbcTemplate,
-    private val transactionTemplate: TransactionTemplate
+    private val transactionTemplate: TransactionTemplate,
 ) {
-
     suspend fun getAvailableEscapeRooms(): List<EscapeRoom> {
-        val sql = """
-                SELECT id,
-                name,
-                description,
-                difficulty_level,
-                max_participants,
-                price,
-                created_at,
-                updated_at
-                FROM AvailableEscapeRooms;
+        val sql =
+            """
+            SELECT id,
+            name,
+            description,
+            difficulty_level,
+            max_participants,
+            price,
+            created_at,
+            updated_at
+            FROM AvailableEscapeRooms;
             """.trimIndent()
 
         return withContext(Dispatchers.IO) {
@@ -34,22 +33,22 @@ class EscapeRoomRepository(
     }
 
     suspend fun findAll(): List<EscapeRoom> {
-        val sql = """
-                SELECT id,
-                name,
-                description,
-                difficulty_level,
-                max_participants,
-                price,
-                created_at,
-                updated_at
-                FROM escape_rooms;
+        val sql =
+            """
+            SELECT id,
+            name,
+            description,
+            difficulty_level,
+            max_participants,
+            price,
+            created_at,
+            updated_at
+            FROM escape_rooms;
             """.trimIndent()
 
         return withContext(Dispatchers.IO) {
             jdbcTemplate.query(sql) { rs, _ -> rs.toEscapeRoom() }
         }
-
     }
 
     suspend fun save(entity: EscapeRoom) {
@@ -60,12 +59,15 @@ class EscapeRoomRepository(
                 entity.description,
                 entity.difficultyLevel,
                 entity.maxParticipants,
-                entity.price
+                entity.price,
             )
         }
     }
 
-    suspend fun update(id: Int, request: EscapeRoom) {
+    suspend fun update(
+        id: Int,
+        request: EscapeRoom,
+    ) {
         transactionTemplate.executeWithoutResult {
             jdbcTemplate.update(
                 """
@@ -82,19 +84,18 @@ class EscapeRoomRepository(
                 request.difficultyLevel,
                 request.maxParticipants,
                 request.price,
-                id
+                id,
             )
         }
-
     }
 
     suspend fun delete(id: Int) {
         transactionTemplate.executeWithoutResult {
             jdbcTemplate.update(
                 """
-                    delete from escape_rooms where id = ?
+                delete from escape_rooms where id = ?
                 """.trimIndent(),
-                id
+                id,
             )
         }
     }

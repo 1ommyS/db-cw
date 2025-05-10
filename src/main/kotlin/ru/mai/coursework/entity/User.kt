@@ -4,8 +4,7 @@ import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.sql.ResultSet
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.util.Date
+import java.util.*
 
 data class User(
     val id: Int = 0,
@@ -18,17 +17,17 @@ data class User(
     val phone: String?,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
-    val role: Role
+    val role: Role,
 ) : UserDetails {
     override fun getAuthorities(): Collection<GrantedAuthority?>? = listOf(role)
 
     override fun getPassword(): String? = passwordHash
-    override fun getUsername(): String = username
 
+    override fun getUsername(): String = username
 }
 
-fun ResultSet.toUser(): User {
-    return User(
+fun ResultSet.toUser(): User =
+    User(
         id = getInt("id"),
         username = getString("username"),
         passwordHash = getString("password_hash"),
@@ -37,10 +36,10 @@ fun ResultSet.toUser(): User {
         createdAt = getTimestamp("created_at").toLocalDateTime(),
         updatedAt = getTimestamp("updated_at").toLocalDateTime(),
         fullName = getString("ful_name"),
-        role = Role(
-            id = getInt("role_id"),
-            name = getString("role_name")
-        ),
-        birthDate = getDate("birth_date")
+        role =
+            Role(
+                id = getInt("role_id"),
+                name = getString("role_name"),
+            ),
+        birthDate = getDate("birth_date"),
     )
-}

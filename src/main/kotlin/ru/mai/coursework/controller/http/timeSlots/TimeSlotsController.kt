@@ -20,29 +20,31 @@ import ru.mai.coursework.operations.timeSlots.GetAvailableTimeSlotsOperation
 class TimeSlotsController(
     private val getAvailableTimeSlotsOperation: GetAvailableTimeSlotsOperation,
     private val createTimeSlotsOperation: CreateTimeSlotsOperation,
-    private val timeSlotMapper: TimeSlotMapper
+    private val timeSlotMapper: TimeSlotMapper,
 ) {
-
     @Operation(summary = "Получить все доступны для брони слоты", description = "Получить все доступны для брони слоты")
     @PostMapping(
         "availableTimeSlots",
         produces = [MediaType.APPLICATION_JSON_VALUE],
-        consumes = [MediaType.APPLICATION_JSON_VALUE]
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
     )
-    suspend fun getAvailableTimeSlots(@RequestBody request: GetAvailableTimeSlotsRequest): GetAvailableTimeSlotsResponse {
+    suspend fun getAvailableTimeSlots(
+        @RequestBody request: GetAvailableTimeSlotsRequest,
+    ): GetAvailableTimeSlotsResponse {
         val entity = timeSlotMapper.toEntity(request)
 
         val availableTimeSlots = getAvailableTimeSlotsOperation(entity)
 
         return GetAvailableTimeSlotsResponse(
-            availableTimeSlots = timeSlotMapper.toDto(availableTimeSlots)
+            availableTimeSlots = timeSlotMapper.toDto(availableTimeSlots),
         )
     }
 
     @Operation(summary = "Создать слоты", description = "Создать слоты")
     @PostMapping(produces = [MediaType.APPLICATION_JSON_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
-    suspend fun createTimeSlots(@RequestBody request: CreateTimeSlotsRequest) {
+    suspend fun createTimeSlots(
+        @RequestBody request: CreateTimeSlotsRequest,
+    ) {
         createTimeSlotsOperation(request)
     }
-
 }

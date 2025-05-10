@@ -5,9 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class CourseworkApplicationTests {
-
     @Test
-    fun contextLoads() {
+    suspend fun contextLoads() {
     }
-
 }

@@ -20,7 +20,7 @@ import ru.mai.coursework.operations.user.UpdateUserOperation
 @RequestMapping("/user")
 class UserController(
     private val findUsersOperation: FindUsersOperation,
-    private val updateUserOperation: UpdateUserOperation
+    private val updateUserOperation: UpdateUserOperation,
 ) {
     /**
      * Retrieves a list of all users.
@@ -43,7 +43,9 @@ class UserController(
     @GetMapping("{id}", consumes = ["application/json"])
     @PreAuthorize("isAuthenticated()")
     @Operation(description = "Получает пользователя по ID.")
-    suspend fun getUserById(@PathVariable id: Int) = findUsersOperation.findById(id)
+    suspend fun getUserById(
+        @PathVariable id: Int,
+    ) = findUsersOperation.findById(id)
 
     /**
      * Updates the current user.
@@ -56,7 +58,10 @@ class UserController(
     @PutMapping(produces = ["application/json"], consumes = ["application/json"])
     @Operation(description = "Обновляет текущего пользователя.")
     @PreAuthorize("isAuthenticated()")
-    suspend fun updateUser(@AuthenticationPrincipal user: User, @RequestBody dto: UpdateUserDto) {
+    suspend fun updateUser(
+        @AuthenticationPrincipal user: User,
+        @RequestBody dto: UpdateUserDto,
+    ) {
         dto.id = user.id
 
         updateUserOperation(dto)

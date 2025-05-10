@@ -12,9 +12,8 @@ import ru.mai.coursework.infrastructure.configuration.security.filters.JwtAuthen
 @Configuration
 class SecurityConfig(
     private val corsFilter: CorsFilter,
-    private val jwtAuthenticationFilter: JwtAuthenticationFilter
+    private val jwtAuthenticationFilter: JwtAuthenticationFilter,
 ) {
-
     companion object {
         val WHITELIST = arrayOf("/**")
     }
@@ -26,10 +25,11 @@ class SecurityConfig(
             .csrf { it.disable() }
             .authorizeHttpRequests { authz ->
                 authz
-                    .requestMatchers(*WHITELIST).permitAll()
-                    .anyRequest().authenticated()
-            }
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+                    .requestMatchers(*WHITELIST)
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+            }.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
